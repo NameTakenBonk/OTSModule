@@ -25,7 +25,7 @@ Player.CharacterAdded:Connect(function(Character)
     local function PlayerInput(ActionName, InputState, InputObject)
         if InputState == Enum.UserInputState.Change then
             CameraAngleX  -= InputObject.Delta.X
-            CameraAngleY  -= CameraAngleY - InputObject.Delta.Y * 0.4 -- Prevents 360 degrees movenet for the Y axis
+            CameraAngleY  -= math.clamp(CameraAngleY - InputObject.Delta.Y * 0.4, -90, 90) -- Prevents 360 degrees movenet for the Y axis
         end
     end
 
