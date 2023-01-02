@@ -1,7 +1,6 @@
 --[[
     Unfinished
 
-    Fix Y axis
     Mouse Icon
     Camera Collsion
 ]]
@@ -52,7 +51,7 @@ function OTS:Enable()
     local function PlayerInput(ActionName, InputState, InputObject)
         if InputState == Enum.UserInputState.Change then
             self.CameraAngleX -= InputObject.Delta.X
-            self.CameraAngleY -= math.clamp(self.CameraAngleY - InputObject.Delta.Y * 0.4, -90, 90) -- // Clamping the Y rotation(Currently needs fixing)
+            self.CameraAngleY -= math.clamp(InputObject.Delta.Y * 0.4, -70, 70) -- // Clamping the Y rotation(Currently needs fixing)
         end
     end
 
@@ -61,7 +60,7 @@ function OTS:Enable()
 
     -- // Alligning the HumanoidRootPart and Setting the camera position
     self.RenderStepped = RunService.RenderStepped:Connect(function()
-        local StartCFrame = CFrame.new(self.HumanoidRootPart.CFrame.Position) * CFrame.Angles(0, math.rad(self.CameraAngleX), 0) * CFrame.Angles(0, math.rad(self.CameraAngleY), 0) -- // Making the starting CFrame
+        local StartCFrame = CFrame.new(self.HumanoidRootPart.CFrame.Position) * CFrame.Angles(0, math.rad(self.CameraAngleX), 0) * CFrame.Angles(math.rad(self.CameraAngleY), 0, 0) -- // Making the starting CFrame
         local CameraCFrame = StartCFrame:PointToWorldSpace(self.CameraOffset) -- // Making the camera position
         local CameraFocus = StartCFrame:PointToWorldSpace(Vector3.new(self.CameraOffset.X, self.CameraOffset.Y, -100000)) -- // Making the camera dirction
 
