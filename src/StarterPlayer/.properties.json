@@ -1,0 +1,22 @@
+{
+	"CharacterMaxSlopeAngle": 89,
+	"CharacterWalkSpeed": 16,
+	"CharacterJumpHeight": 7.199999809265137,
+	"NameDisplayDistance": 100,
+	"Class": "StarterPlayer",
+	"HumanoidStateMachineMode": "Enum.HumanoidStateMachineMode.Default",
+	"AutoJumpEnabled": true,
+	"CameraMinZoomDistance": 0.5,
+	"DevComputerCameraMovementMode": "Enum.DevComputerCameraMovementMode.UserChoice",
+	"UserEmotesEnabled": true,
+	"HealthDisplayDistance": 100,
+	"CharacterJumpPower": 50,
+	"LoadCharacterAppearance": true,
+	"DevCameraOcclusionMode": "Enum.DevCameraOcclusionMode.Zoom",
+	"DevTouchMovementMode": "Enum.DevTouchMovementMode.UserChoice",
+	"CameraMode": "Enum.CameraMode.Classic",
+	"CameraMaxZoomDistance": 128,
+	"EnableMouseLockOption": true,
+	"DevTouchCameraMovementMode": "Enum.DevTouchCameraMovementMode.UserChoice",
+	"DevComputerMovementMode": "Enum.DevComputerMovementMode.UserChoice"
+}
