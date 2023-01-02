@@ -36,10 +36,13 @@ function OTS.new(Player : Player, Camera : Camera, Character, Humanoid, CameraOf
 end
 
 -- // Enable Function
-function OTS:Enable()
+function OTS:Enable(AllignCharacter : boolean)
     -- // Checking if ots is already enabled
     if self.Enabled then return warn("OTS is already enabled!") end
     self.Enabled = true -- // Changing it to enabled
+
+    -- // Seeing if the request wants the character alligned
+    if AllignCharacter == true then if self.CharacterAlligned ~= false then self.CharacterAlligned = true end end
 
     -- // Setting up the camera and mouse
     self.Camera.CameraType = Enum.CameraType.Scriptable
@@ -66,8 +69,11 @@ function OTS:Enable()
 
 		self.Camera.CFrame = CFrame.lookAt(CameraCFrame, CameraFocus)
 		
-		local LookCFrame = CFrame.lookAt(self.HumanoidRootPart.Position, self.Camera.CFrame:PointToWorldSpace(Vector3.new(0, 0, -100000))) -- // the general direction where the camera is looking at
-        self.HumanoidRootPart.CFrame = CFrame.fromMatrix(self.HumanoidRootPart.Position, LookCFrame.XVector, self.HumanoidRootPart.CFrame.YVector) -- // Setting the humanoid rotation to the camera
+        -- // Only if the character alligned is set to tru
+        if self.CharacterAlligned then
+            local LookCFrame = CFrame.lookAt(self.HumanoidRootPart.Position, self.Camera.CFrame:PointToWorldSpace(Vector3.new(0, 0, -100000))) -- // the general direction where the camera is looking at
+            self.HumanoidRootPart.CFrame = CFrame.fromMatrix(self.HumanoidRootPart.Position, LookCFrame.XVector, self.HumanoidRootPart.CFrame.YVector) -- // Setting the humanoid rotation to the camera
+        end
     end)
 end
 
@@ -75,6 +81,7 @@ function OTS:Disable()
     -- // Checking if ots is already disabled
     if not self.Enabled then return warn("OTS is already disabled!") end
     self.Enabled = false -- // Setting the ots to disabled
+    self.CharacterAlligned = false -- // Sets it back to false Might remove it
 
     -- // Changing the camera back to defualt
     self.Camera.CameraType = Enum.CameraType.Custom
