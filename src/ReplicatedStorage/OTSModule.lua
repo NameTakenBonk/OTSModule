@@ -1,5 +1,9 @@
 --[[
     Unfinished
+
+    Fix Y axis
+    Mouse Icon
+    Camera Collsion
 ]]
 
 local UserInputService = game:GetService("UserInputService")
@@ -9,6 +13,7 @@ local RunService = game:GetService("RunService")
 local OTS = { }
 OTS.__index = OTS
 
+-- // Constructor 
 function OTS.new(Player : Player, Camera : Camera, Character, Humanoid, CameraOffset : Vector3, MouseIcon)
     local NewOTS = { }
     setmetatable(NewOTS, OTS)
