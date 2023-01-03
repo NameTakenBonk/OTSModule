@@ -3,6 +3,7 @@
 # To Do
 
 * Mouse Icon
+* Settings
 
 # Constructor 
 ```lua
