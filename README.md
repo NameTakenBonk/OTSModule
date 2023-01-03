@@ -2,10 +2,7 @@
 
 # To Do
 
-* Camera Collision
 * Mouse Icon
-* Changing Sides
-* More Optionality
 
 # Constructor 
 ```lua
@@ -15,14 +12,19 @@ You need this added to your local script before enabling it. the last to options
 
 # Functions
 ```lua
-OTS:Enable(AllignCharacter : boolean)
+NewOTS:Enable(AllignCharacter : boolean)
 ```
 Enables the ots system and `AllignCharacter` can be also asigned by `NewOTS.CharacterAlligned = true`.
 
 ```lua
-OTS:Disable(ResetAllignment : boolean)
+NewOTS:Disable(ResetAllignment : boolean)
 ```
 Disables the ots system and if resetallignment is set to true then it will set `NewOTS.CharacterAlligned = false`.
+
+```lua
+NewOTS:SwitchSide()
+```
+Switches to the opposite x side of the camera.
 
 # Example code
 
