@@ -6,7 +6,7 @@
 
 # Constructor 
 ```lua
-local NewOTS = OTS.new(Player : Player, Camera : Camera, Character, Humanoid, CameraOffset : Vector3, MouseIcon)
+local NewOTS = OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, MouseIcon)
 ```
 You need this added to your local script before enabling it. the last to options are completetly optional.
 
