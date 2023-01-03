@@ -20,9 +20,9 @@ OTS:Enable(AllignCharacter : boolean)
 Enables the ots system and `AllignCharacter` can be also asigned by `NewOTS.CharacterAlligned = true`.
 
 ```lua
-OTS:Disable()
+OTS:Disable(ResetAllignment : boolean)
 ```
-Disables the ots system.
+Disables the ots system and if resetallignment is set to true then it will set `NewOTS.CharacterAlligned = false`.
 
 # Example code
 
