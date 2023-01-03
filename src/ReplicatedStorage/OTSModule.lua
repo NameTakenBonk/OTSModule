@@ -2,6 +2,8 @@
 	To Do:
 
     Mouse Icon
+    Settings
+    Events
 ]]
 
 local UserInputService = game:GetService("UserInputService")
@@ -14,28 +16,37 @@ OTS.__index = OTS
 -- // Constructor 
 function OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, MouseIcon)
     local NewOTS = { }
-    setmetatable(NewOTS, OTS)
+    local self = setmetatable(NewOTS, OTS)
 
-    NewOTS.Player = Player
-    NewOTS.Camera = Camera
-    NewOTS.Character = Character
-    NewOTS.Humanoid = NewOTS.Character:WaitForChild("Humanoid")
-    NewOTS.HumanoidRootPart = Character.HumanoidRootPart
+    local UpdatedEvent = Instance.new("BindableEvent")
+    local EnabledEvent = Instance.new("BindableEvent")
+    local DisabledEvent = Instance.new("BindableEvent")
 
-    NewOTS.CameraOffset = CameraOffset or Vector3.new(2, 2, 8)
-    NewOTS.CameraAngleX = 0
-    NewOTS.CameraAngleY = 0
+    self.OnUpdated = UpdatedEvent.Event
+    self.OnEnabled = EnabledEvent.Event
+    self.OnDisabled = DisabledEvent.Event
 
-    NewOTS.CharacterAlligned = false
-    NewOTS.Enabled = false
+    self.Player = Player
+    self.Camera = Camera
+    self.Character = Character
+    self.Humanoid = NewOTS.Character:WaitForChild("Humanoid")
+    self.HumanoidRootPart = Character.HumanoidRootPart
 
-    NewOTS.RenderStepped = nil
+    self.CameraOffset = CameraOffset or Vector3.new(2, 2, 8)
+    self.CameraAngleX = 0
+    self.CameraAngleY = 0
+
+    self.CharacterAlligned = false
+    self.Enabled = false
+
+    self.RenderStepped = nil
 
     return NewOTS
 end
 
 -- // Enable Function
 function OTS:Enable(AllignCharacter : boolean)
+    self.OnEnabled:Fire()
     -- // Checking if ots is already enabled
     if self.Enabled then return warn("OTS is already enabled!") end
     self.Enabled = true -- // Changing it to enabled
@@ -91,6 +102,8 @@ function OTS:Enable(AllignCharacter : boolean)
             local LookCFrame = CFrame.lookAt(self.HumanoidRootPart.Position, self.Camera.CFrame:PointToWorldSpace(Vector3.new(0, 0, -100000))) -- // the general direction where the camera is looking at
             self.HumanoidRootPart.CFrame = CFrame.fromMatrix(self.HumanoidRootPart.Position, LookCFrame.XVector, self.HumanoidRootPart.CFrame.YVector) -- // Setting the humanoid rotation to the camera
         end
+
+        self.OnUpdated:Fire()
     end)
 end
 
@@ -110,6 +123,7 @@ function OTS:Disable(ResetAllignment : boolean)
 
     -- // Disconnecting the Allignment and positioning
     self.RenderStepped:Disconnect()
+    self.OnDisabled:Fire()
 end
 
 function OTS:SwitchSide()
