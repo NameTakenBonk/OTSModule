@@ -26,6 +26,22 @@ NewOTS:SwitchSide()
 ```
 Switches to the opposite x side of the camera.
 
+# Events
+```lua
+NewOTS.OnUpdated(NewCameraCFrame : CFrame)
+```
+Gets called every frame when OTS is enabled, it returns the new camera CFrame.
+
+```lua
+NewOTS.OnEnabled()
+```
+Gets called when the module is enabled.
+
+```lua
+NewOTS.OnDisabled()
+```
+Gets called when the module is disabled.
+
 # Example code
 
 ```lua

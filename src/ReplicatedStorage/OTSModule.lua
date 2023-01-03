@@ -103,7 +103,7 @@ function OTS:Enable(AllignCharacter : boolean)
             self.HumanoidRootPart.CFrame = CFrame.fromMatrix(self.HumanoidRootPart.Position, LookCFrame.XVector, self.HumanoidRootPart.CFrame.YVector) -- // Setting the humanoid rotation to the camera
         end
 
-        self.OnUpdated:Fire()
+        self.OnUpdated:Fire(NewCameraCFrame)
     end)
 end
 
