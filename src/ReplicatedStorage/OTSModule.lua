@@ -3,7 +3,6 @@
 
     Mouse Icon
     Settings
-    Events
 ]]
 
 local UserInputService = game:GetService("UserInputService")
