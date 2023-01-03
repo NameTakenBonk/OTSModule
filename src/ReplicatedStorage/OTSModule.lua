@@ -1,8 +1,7 @@
 --[[
-    Unfinished
+	To Do:
 
     Mouse Icon
-    Camera Collsion
 ]]
 
 local UserInputService = game:GetService("UserInputService")
@@ -13,16 +12,16 @@ local OTS = { }
 OTS.__index = OTS
 
 -- // Constructor 
-function OTS.new(Player : Player, Camera : Camera, Character, Humanoid, CameraOffset : Vector3, MouseIcon)
+function OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, MouseIcon)
     local NewOTS = { }
     setmetatable(NewOTS, OTS)
 
     NewOTS.Player = Player
     NewOTS.Camera = Camera
     NewOTS.Character = Character
-    NewOTS.Humanoid = Humanoid
+    NewOTS.Humanoid = NewOTS.Character:WaitForChild("Humanoid")
     NewOTS.HumanoidRootPart = Character.HumanoidRootPart
-    
+
     NewOTS.CameraOffset = CameraOffset or Vector3.new(2, 2, 8)
     NewOTS.CameraAngleX = 0
     NewOTS.CameraAngleY = 0
@@ -66,8 +65,26 @@ function OTS:Enable(AllignCharacter : boolean)
         local StartCFrame = CFrame.new(self.HumanoidRootPart.CFrame.Position) * CFrame.Angles(0, math.rad(self.CameraAngleX), 0) * CFrame.Angles(math.rad(self.CameraAngleY), 0, 0) -- // Making the starting CFrame
         local CameraCFrame = StartCFrame:PointToWorldSpace(self.CameraOffset) -- // Making the camera position
         local CameraFocus = StartCFrame:PointToWorldSpace(Vector3.new(self.CameraOffset.X, self.CameraOffset.Y, -100000)) -- // Making the camera dirction
+        local NewCameraCFrame = CFrame.lookAt(CameraCFrame, CameraFocus)
 
-		self.Camera.CFrame = CFrame.lookAt(CameraCFrame, CameraFocus)
+        local NewRaycastParams = RaycastParams.new()
+        NewRaycastParams.FilterDescendantsInstances = self.Character:GetChildren()
+        NewRaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+
+        local RaycastResult = workspace:Raycast(
+            self.HumanoidRootPart.Position,
+            NewCameraCFrame.Position - self.HumanoidRootPart.Position,
+            NewRaycastParams
+        )
+
+        if RaycastResult ~= nil then
+            local CollsionDisplacment = (RaycastResult.Position - self.HumanoidRootPart.Position)
+            local CollsionPosition = self.HumanoidRootPart.Position + (CollsionDisplacment.Unit * (CollsionDisplacment.Magnitude - 0.3))
+            local X, Y, Z, R00, R01, R02, R10, R11, R12, R20, R21, R22 = NewCameraCFrame:GetComponents()
+            NewCameraCFrame = CFrame.new(CollsionPosition.x, CollsionPosition.y, CollsionPosition.z, R00, R01, R02, R10, R11, R12, R20, R21, R22)
+        end
+
+		self.Camera.CFrame = NewCameraCFrame
 		
         -- // Only if the character alligned is set to tru
         if self.CharacterAlligned then
@@ -93,6 +110,14 @@ function OTS:Disable(ResetAllignment : boolean)
 
     -- // Disconnecting the Allignment and positioning
     self.RenderStepped:Disconnect()
+end
+
+function OTS:SwitchSide()
+    if self.CameraOffset.X > 0 then
+        self.CameraOffset.X = math.abs(self.CameraOffset.X) * -1
+    else
+        self.CameraOffset.X = math.abs(self.CameraOffset.X) * 1
+    end
 end
 
 return OTS
