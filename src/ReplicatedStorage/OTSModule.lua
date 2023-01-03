@@ -42,7 +42,7 @@ function OTS:Enable(AllignCharacter : boolean)
     self.Enabled = true -- // Changing it to enabled
 
     -- // Seeing if the request wants the character alligned
-    if AllignCharacter == true then if self.CharacterAlligned ~= false then self.CharacterAlligned = true end end
+    if AllignCharacter == true then self.CharacterAlligned = true end
 
     -- // Setting up the camera and mouse
     self.Camera.CameraType = Enum.CameraType.Scriptable
@@ -77,11 +77,13 @@ function OTS:Enable(AllignCharacter : boolean)
     end)
 end
 
-function OTS:Disable()
+function OTS:Disable(ResetAllignment : boolean)
     -- // Checking if ots is already disabled
     if not self.Enabled then return warn("OTS is already disabled!") end
     self.Enabled = false -- // Setting the ots to disabled
-    self.CharacterAlligned = false -- // Sets it back to false Might remove it
+    if ResetAllignment then
+        self.CharacterAlligned = false -- // Sets it back to false Might remove it
+    end
 
     -- // Changing the camera back to defualt
     self.Camera.CameraType = Enum.CameraType.Custom

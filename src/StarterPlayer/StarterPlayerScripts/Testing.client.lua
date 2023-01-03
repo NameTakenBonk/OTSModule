@@ -1,4 +1,3 @@
-local ContentProvider = game:GetService("ContentProvider")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ContextActionService = game:GetService("ContextActionService")
 
@@ -15,6 +14,6 @@ ContextActionService:BindAction("OTSEnable", function()
     if PlayerOTS.Enabled then
         PlayerOTS:Disable()
     else
-        PlayerOTS:Enable()
+        PlayerOTS:Enable(true)
     end
 end, false, Enum.KeyCode.LeftShift)
