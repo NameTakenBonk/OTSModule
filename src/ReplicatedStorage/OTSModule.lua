@@ -10,6 +10,10 @@ local UserInputService = game:GetService("UserInputService")
 local ContextActionService = game:GetService("ContextActionService")
 local RunService = game:GetService("RunService")
 
+local UpdatedEvent = Instance.new("BindableEvent")
+local EnabledEvent = Instance.new("BindableEvent")
+local DisabledEvent = Instance.new("BindableEvent")
+
 local OTS = { }
 OTS.__index = OTS
 
@@ -17,10 +21,6 @@ OTS.__index = OTS
 function OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, MouseIcon)
     local NewOTS = { }
     local self = setmetatable(NewOTS, OTS)
-
-    local UpdatedEvent = Instance.new("BindableEvent")
-    local EnabledEvent = Instance.new("BindableEvent")
-    local DisabledEvent = Instance.new("BindableEvent")
 
     self.OnUpdated = UpdatedEvent.Event
     self.OnEnabled = EnabledEvent.Event
@@ -46,7 +46,7 @@ end
 
 -- // Enable Function
 function OTS:Enable(AllignCharacter : boolean)
-    self.OnEnabled:Fire()
+    EnabledEvent:Fire()
     -- // Checking if ots is already enabled
     if self.Enabled then return warn("OTS is already enabled!") end
     self.Enabled = true -- // Changing it to enabled
@@ -103,7 +103,7 @@ function OTS:Enable(AllignCharacter : boolean)
             self.HumanoidRootPart.CFrame = CFrame.fromMatrix(self.HumanoidRootPart.Position, LookCFrame.XVector, self.HumanoidRootPart.CFrame.YVector) -- // Setting the humanoid rotation to the camera
         end
 
-        self.OnUpdated:Fire(NewCameraCFrame)
+        UpdatedEvent:Fire(NewCameraCFrame)
     end)
 end
 
@@ -123,7 +123,7 @@ function OTS:Disable(ResetAllignment : boolean)
 
     -- // Disconnecting the Allignment and positioning
     self.RenderStepped:Disconnect()
-    self.OnDisabled:Fire()
+    DisabledEvent:Fire()
 end
 
 function OTS:SwitchSide()
