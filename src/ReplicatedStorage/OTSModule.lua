@@ -17,9 +17,15 @@ local OTS = { }
 OTS.__index = OTS
 
 -- // Constructor 
-function OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, MouseIcon)
+function OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, FOV, LerpSpeed, MouseIcon)
     local NewOTS = { }
     local self = setmetatable(NewOTS, OTS)
+
+    self.Settings = {
+        CameraOffset = CameraOffset or Vector3.new(2, 2, 8),
+        CameraFOV = 70 or FOV,
+        LerpSpeed = 2 or LerpSpeed
+    }
 
     self.OnUpdated = UpdatedEvent.Event
     self.OnEnabled = EnabledEvent.Event
@@ -80,13 +86,16 @@ function OTS:Enable(AllignCharacter : boolean)
         local NewRaycastParams = RaycastParams.new()
         NewRaycastParams.FilterDescendantsInstances = self.Character:GetChildren()
         NewRaycastParams.FilterType = Enum.RaycastFilterType.Blacklist
+        NewRaycastParams.RespectCanCollide = true
 
+        -- // Raycasting
         local RaycastResult = workspace:Raycast(
             self.HumanoidRootPart.Position,
             NewCameraCFrame.Position - self.HumanoidRootPart.Position,
             NewRaycastParams
         )
 
+        -- // Changing the camera position based on the obstruction.
         if RaycastResult ~= nil then
             local CollsionDisplacment = (RaycastResult.Position - self.HumanoidRootPart.Position)
             local CollsionPosition = self.HumanoidRootPart.Position + (CollsionDisplacment.Unit * (CollsionDisplacment.Magnitude - 0.3))
@@ -125,12 +134,13 @@ function OTS:Disable(ResetAllignment : boolean)
     DisabledEvent:Fire()
 end
 
+-- // Swithcing sides
 function OTS:SwitchSide()
-    if self.CameraOffset.X > 0 then
-        self.CameraOffset.X = math.abs(self.CameraOffset.X) * -1
-    else
-        self.CameraOffset.X = math.abs(self.CameraOffset.X) * 1
-    end
+	if self.CameraOffset.X > 0 then
+		self.CameraOffset = Vector3.new(math.abs(self.CameraOffset.X) * -1, self.CameraOffset.Y, self.CameraOffset.Z)
+	else
+		self.CameraOffset = Vector3.new(math.abs(self.CameraOffset.X) * 1, self.CameraOffset.Y, self.CameraOffset.Z)
+	end
 end
 
 return OTS
