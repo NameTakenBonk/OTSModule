@@ -4,7 +4,7 @@ https://www.roblox.com/library/12033351086/OTSModule
 
 # To Do
 
-* Mouse ICon
+* Mouse Icon
 
 # Constructor 
 ```lua
