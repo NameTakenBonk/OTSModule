@@ -4,12 +4,11 @@ https://www.roblox.com/library/12033351086/OTSModule
 
 # To Do
 
-* Mouse Icon
-* Settings
+* Mouse ICon
 
 # Constructor 
 ```lua
-local NewOTS = OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, MouseIcon)
+local NewOTS = OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vector3, FOV, LerpSpeed, MouseIcon)
 ```
 You need this added to your local script before enabling it. the last to options are completetly optional.
 
