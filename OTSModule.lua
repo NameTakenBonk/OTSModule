@@ -54,6 +54,30 @@ function OTS.new(Player : Player, Camera : Camera, Character, CameraOffset : Vec
     return NewOTS
 end
 
+function OTS:Disable(ResetAllignment : boolean)
+    -- // Checking if ots is already disabled
+    if not self.Enabled then return warn("OTS is already disabled!") end
+    self.Enabled = false -- // Setting the ots to disabled
+    if ResetAllignment then
+        self.CharacterAlligned = false -- // Sets it back to false Might remove it
+    end
+
+    -- // Making the tween
+    local CameraChangeTweenInfo =  TweenInfo.new(self.Settings.TweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+    local CameraChangeTween = TweenService:Create(self.Camera, CameraChangeTweenInfo, { FieldOfView = self.CameraDefualtFOV})
+    CameraChangeTween:Play()
+
+    -- // Changing the camera back to defualt
+    self.Camera.CameraType = Enum.CameraType.Custom
+
+    UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+    UserInputService.MouseIconEnabled = true
+
+    -- // Disconnecting the Allignment and positioning
+    self.RenderStepped:Disconnect()
+    DisabledEvent:Fire()
+end
+
 -- // Enable Function
 function OTS:Enable(AllignCharacter : boolean)
     EnabledEvent:Fire()
@@ -125,30 +149,10 @@ function OTS:Enable(AllignCharacter : boolean)
 
         UpdatedEvent:Fire(NewCameraCFrame)
     end)
-end
 
-function OTS:Disable(ResetAllignment : boolean)
-    -- // Checking if ots is already disabled
-    if not self.Enabled then return warn("OTS is already disabled!") end
-    self.Enabled = false -- // Setting the ots to disabled
-    if ResetAllignment then
-        self.CharacterAlligned = false -- // Sets it back to false Might remove it
-    end
-
-    -- // Making the tween
-    local CameraChangeTweenInfo =  TweenInfo.new(self.Settings.TweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
-    local CameraChangeTween = TweenService:Create(self.Camera, CameraChangeTweenInfo, { FieldOfView = self.CameraDefualtFOV})
-    CameraChangeTween:Play()
-
-    -- // Changing the camera back to defualt
-    self.Camera.CameraType = Enum.CameraType.Custom
-
-    UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-    UserInputService.MouseIconEnabled = true
-
-    -- // Disconnecting the Allignment and positioning
-    self.RenderStepped:Disconnect()
-    DisabledEvent:Fire()
+    self.Humanoid.Died:Connect(function() 
+        self:Disable()
+    end)
 end
 
 -- // Swithcing sides
